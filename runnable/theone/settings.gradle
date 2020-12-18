@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'sw-arch-project'
+include 'sw-batch'
+include 'sw-domain'
+include 'sw-subscribe'
