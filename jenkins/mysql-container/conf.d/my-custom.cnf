@@ -1,0 +1,4 @@
+[mysqld]
+max_connections=250
+skip-grant-tables
+bind-address=127.0.0.1, 172.17.0.1, 172.18.0.1, 172.29.0.1, 172.28.0.1

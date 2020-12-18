@@ -1,0 +1,57 @@
+version: '2'
+services:
+  jenkins-blueocean:
+    build: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+      - DOCKER_HOST=tcp://docker:2376
+    volumes:
+      - "jenkins-data:/var/jenkins_home"
+      - "jenkins-docker-certs:/certs/client:ro"
+    expose:
+      - "8080"
+      - "50000"
+    networks:
+      - theone
+  jenkins-docker:
+    image: docker:dind
+    privileged: true
+    expose:
+      - "2376"
+    ports:
+      - "2376:2376"
+    networks:
+            theone:
+                aliases:
+                    - docker
+    environment:
+      -  DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - "jenkins-docker-certs:/certs/client"
+      - "jenkins-data:/var/jenkins_home"
+  mysql-container:
+    image: mysql/mysql-server
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - theone
+    environment:
+      MYSQL_ROOT_PASSWORD: kaist@2020
+      MYSQL_DATABASE: simplepay
+      MYSQL_USER: simplepay
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - "./mysql_data:/var/lib/mysql"
+      - "./mysql-container/conf.d:/etc/my.cnf.d"
+networks:
+    theone:
+volumes:
+    jenkins-data:
+    jenkins-docker-certs:
