@@ -13,6 +13,7 @@ while true; do
 	do
 		if (( $(echo "$perc > 70" | bc -l )))
 		then
+            echo $perc
 			next=`echo "$num + 1" | bc -l`
 			echo "scale out : ${next}"
 			docker-compose up --scale "$1"=$next -d

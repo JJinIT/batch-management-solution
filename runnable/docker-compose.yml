@@ -13,19 +13,11 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 172.17.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "job_item_topic:1:1" 
+      KAFKA_CREATE_TOPICS: "job_item_topic:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - theonebatch
-  producer:
-    build: theone
-    depends_on:
-      - subscriber
-    entrypoint:
-       ["/home/sns/gradlew", ":sw-batch:bootRun", "-Dspring.batch.job.names=SampleJob"]
-    networks:
-      - theonebatch 
   subscriber:
     build: theone
     depends_on:
